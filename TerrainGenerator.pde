@@ -4,6 +4,9 @@ float resolution = 240;
 float xOff = 0;
 float yOff = 0;
 
+//Using time for unique screenshot name
+import java.time.LocalDate;
+
 void setup(){
   size(1200,800);
   noStroke();
@@ -54,6 +57,8 @@ void drawTerrain(){
 
 
 
+int timeOfFirstKey = 0;
+LocalDate dateStamp = LocalDate.now();
 
 void keyPressed(){
   
@@ -76,6 +81,18 @@ void keyPressed(){
   if(keyCode == UP){yOff-=1;}
   if(keyCode == DOWN){yOff+=1;}
   
+  
+
+    if (keyCode == 83){ // When S is pressed
+        if(timeOfFirstKey == 0 || millis()-timeOfFirstKey > 1000){ //the time when the S key is pressed first 
+            timeOfFirstKey=millis();
+        }
+        else if(millis()-timeOfFirstKey < 1000){ //When the next time S is pressed, 'i.e. double pressed' it compares if it is within a second or not
+                saveFrame("img/ss"+dateStamp+"-######.jpg"); // if so then save the screenshot
+                timeOfFirstKey = 0; // reset the timer
+        }
+    }
+
 }
 
 void mouseWheel(MouseEvent event){
