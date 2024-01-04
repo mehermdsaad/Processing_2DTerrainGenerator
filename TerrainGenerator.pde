@@ -71,14 +71,14 @@ void keyPressed(){
 void mouseWheel(MouseEvent event){
   if(event.getCount()>0){
     resolution+=5;
-    xOff+=(resolution/(resolution-5)-1)*int(mouseX/gridSize);
-    yOff+=(resolution/(resolution-5)-1)*int(mouseY/gridSize);
+    xOff+=(resolution/(resolution-5)-1)*int(mouseX/gridSize+xOff);
+    yOff+=(resolution/(resolution-5)-1)*int(mouseY/gridSize+yOff);
   }
 
   if(event.getCount()<0){
     resolution-=5;
-    xOff-=(resolution/(resolution-5)-1)*int(mouseX/gridSize);
-    yOff-=(resolution/(resolution-5)-1)*int(mouseY/gridSize);
+    xOff-=(resolution/(resolution-5)-1)*int(mouseX/gridSize+xOff);
+    yOff-=(resolution/(resolution-5)-1)*int(mouseY/gridSize+yOff);
   }
 }
 
