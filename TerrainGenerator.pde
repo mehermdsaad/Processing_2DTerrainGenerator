@@ -39,10 +39,12 @@ void draw(){
 }
 
 
-float waveProgress = 0;
-float waveSpeed = 1;
-float waveWidth = 0.05;
-float waveOpacity = 0;
+float wave1Progress = 0;
+float wave1Speed = 1;
+float wave1SpeedHigh = 4;
+float wave1SpeedLow = 0.1;
+float wave1Opacity = 0;
+float wave1PauseTimer = 0;
 
 void drawTerrain(){
   for(int y=0;y<height;y+=gridSize){
@@ -54,21 +56,18 @@ void drawTerrain(){
       if(noiseVal<0.5){
         fill(#08C8E5);
         
-        if (waveProgress<100){
-          waveOpacity=map(waveProgress,0,100,250,100);
+        if (wave1Progress<50){
+          wave1Opacity=map(wave1Progress,0,50,0,200);
         }
-        //else if(waveProgress>50){
-        //  waveOpacity=map(waveProgress,50,100,250,100);
-        //}
-        //else{
-        //  waveOpacity = 255;
-        //}
+        else{
+          wave1Opacity=map(wave1Progress,50,100,200,100);
+        }
         
         
-        if(noiseVal>map(waveProgress,0,100,0.43,0.46) && noiseVal<map(waveProgress,0,100,0.50,0.50)){
+        if(noiseVal>map(wave1Progress,0,100,0.43,0.46) && noiseVal<map(wave1Progress,0,100,0.50,0.50)){
           fill(#08C8E5);
           rect(x,y,gridSize,gridSize);
-          fill(209,242,240,waveOpacity);
+          fill(209,242,240,wave1Opacity);
         }
         if(noiseVal>0.46){
           fill(209,242,240);
@@ -87,8 +86,19 @@ void drawTerrain(){
     }
   }
   
-  waveProgress += waveSpeed;
-  if(waveProgress>=100){waveProgress=0;}
+  if(wave1PauseTimer==0){
+    wave1Progress += wave1Speed;
+  }
+  else{
+    wave1PauseTimer-=1;
+  }
+  
+  if(wave1Progress>100){wave1Progress = 0; wave1PauseTimer = 20;}
+  
+  
+  if(wave1Progress<85){wave1Speed = map(wave1Progress,0,85,1,2);}
+  else{wave1Speed = map(wave1Progress,85,100,2,1);}
+  
 }
 
 
