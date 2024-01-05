@@ -2,6 +2,13 @@
 
 A 2D terrain generator using Perlin noise in processing. 
 
+Features:
+---------------------------------------------------------------------------------
+- Added waves for better aesthetics.
+- Generate new terrain at any instant.
+- Scroll up down causes it to zoom in/out at the very point pointed to by the mouse.
+- Move through the terrain using the mouse/keys. 
+
 Controls:
 ---------------------------------------------------------------------------------
 - Press SPACE to generate a variation of the map.
@@ -9,6 +16,3 @@ Controls:
 - Scroll down/up to zoom in/out.
 - Press the "R" key to reset the offset position and scroll.
 
-New Features:
----------------------------------------------------------------------------------
-- Added waves for better aesthetics.
