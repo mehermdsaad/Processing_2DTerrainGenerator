@@ -1,8 +1,10 @@
-int gridSize = 10;
+int gridSize = 6;
 float resolution = 240;
 
-float xOff = 0;
-float yOff = 0;
+float xOff = 0+10000;
+float yOff = 0+10000;
+
+int scrollSpeed = 3;
 
 //Using time for unique screenshot name
 import java.time.LocalDate;
@@ -36,6 +38,12 @@ void draw(){
   noStroke();
 }
 
+
+float waveProgress = 0;
+float waveSpeed = 1;
+float waveWidth = 0.05;
+float waveOpacity = 0;
+
 void drawTerrain(){
   for(int y=0;y<height;y+=gridSize){
     for(int x=0;x<width;x+=gridSize){
@@ -43,14 +51,44 @@ void drawTerrain(){
       //where the magic happens
       float noiseVal = noise((x+xOff*gridSize)/resolution,(y+yOff*gridSize)/resolution);
       
-      if(noiseVal<0.5){fill(#0D545C);} // Water
-      else if(noiseVal<0.6){fill(#8F7E5F);} // Sand
-      else if(noiseVal<0.7){fill(#6A7F3F);} // Grass
-      else if(noiseVal<1){fill(#2C3D05);}  // Forest
+      if(noiseVal<0.5){
+        fill(#08C8E5);
+        
+        if (waveProgress<100){
+          waveOpacity=map(waveProgress,0,100,250,100);
+        }
+        //else if(waveProgress>50){
+        //  waveOpacity=map(waveProgress,50,100,250,100);
+        //}
+        //else{
+        //  waveOpacity = 255;
+        //}
+        
+        
+        if(noiseVal>map(waveProgress,0,100,0.43,0.46) && noiseVal<map(waveProgress,0,100,0.50,0.50)){
+          fill(#08C8E5);
+          rect(x,y,gridSize,gridSize);
+          fill(209,242,240,waveOpacity);
+        }
+        if(noiseVal>0.46){
+          fill(209,242,240);
+        }
+        
+        if(noiseVal<0.3){
+          fill(#2A5AAC);
+        }
+        
+      } // Water
+      else if(noiseVal<0.6){fill(#FDCF7E);} // Sand
+      else if(noiseVal<0.7){fill(#A3CE49);} // Grass
+      else if(noiseVal<1){fill(#16831C);}  // Forest
       
       rect(x,y,gridSize,gridSize);
     }
   }
+  
+  waveProgress += waveSpeed;
+  if(waveProgress>=100){waveProgress=0;}
 }
 
 
@@ -65,8 +103,8 @@ void keyPressed(){
   // when 'R' is pressed, reset the defaults
   if(key=='r'){
     resolution=240;
-    xOff = 0 ;
-    yOff = 0;
+    xOff = 10000 ;
+    yOff = 10000;
     
   }
   
@@ -76,10 +114,10 @@ void keyPressed(){
   }
   
   // moving through the maps
-  if(keyCode == LEFT){xOff-=1;}
-  if(keyCode == RIGHT){xOff+=1;}
-  if(keyCode == UP){yOff-=1;}
-  if(keyCode == DOWN){yOff+=1;}
+  if(keyCode == LEFT){xOff-=scrollSpeed;}
+  if(keyCode == RIGHT){xOff+=scrollSpeed;}
+  if(keyCode == UP){yOff-=scrollSpeed;}
+  if(keyCode == DOWN){yOff+=scrollSpeed;}
   
   
 
@@ -108,8 +146,8 @@ void mouseWheel(MouseEvent event){
   if(event.getCount()<0){
     if(resolution-5>5){
       resolution-=5;
-      xOff-=(resolution/(resolution-5)-1)*int(mouseX/gridSize+xOff);
-      yOff-=(resolution/(resolution-5)-1)*int(mouseY/gridSize+yOff);
+      xOff-=(1-resolution/(resolution+5))*int(mouseX/gridSize+xOff);
+      yOff-=(1-resolution/(resolution+5))*int(mouseY/gridSize+yOff);
     }
   }
 }
